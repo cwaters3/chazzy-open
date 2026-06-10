@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Chazzy Open '26</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a3d2b;
+    --green-mid: #2d6a45;
+    --green-light: #e8f2ec;
+    --gold: #c9a84c;
+    --gold-light: #f7f0de;
+    --cream: #faf8f4;
+    --text: #1a1a18;
+    --text-mid: #4a4a46;
+    --text-soft: #7a7a74;
+    --border: rgba(26,61,43,0.12);
+    --border-strong: rgba(26,61,43,0.22);
+    --red: #9b2c2c;
+    --red-light: #fdf0f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--green);
+    color: white;
+    text-align: center;
+    padding: 2.5rem 1.25rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://i.imgur.com/pw3JMqv.jpeg');
+    background-size: cover;
+    background-position: center 40%;
+    opacity: 0.35;
+  }
+  .header-content {
+    position: relative;
+    z-index: 1;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .header-title {
+    font-size: clamp(42px, 11vw, 68px);
+    font-weight: 400;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.04em;
+    line-height: 1.0;
+    margin-bottom: 4px;
+  }
+  .header-title .year {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(28px, 7vw, 44px);
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+  .header-details {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .header-detail-pill {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+
+  /* ALERT */
+  .alert {
+    background: var(--red);
+    color: white;
+    padding: 14px 1.25rem;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .alert strong { font-weight: 700; }
+
+  /* CONTENT */
+  .content { padding: 0 1.25rem; max-width: 600px; margin: 0 auto; }
+
+  /* SECTION */
+  .section { padding: 1.75rem 0; border-bottom: 0.5px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 14px;
+  }
+
+  /* BRACKET BLOCK */
+  .match-block {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .match-header {
+    background: var(--green-light);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .match-title { font-size: 13px; font-weight: 600; color: var(--green); }
+  .match-time { font-size: 12px; color: var(--green-mid); font-weight: 500; }
+  .match-teams { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; }
+  .team-col { padding: 14px; }
+  .team-col:first-child { border-right: 0.5px solid var(--border); }
+  .team-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+  }
+  .vs-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+
+  /* PLAYER ROW */
+  .player-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .player-row:last-child { margin-bottom: 0; }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+  .av-1 { background: #ddeef8; color: #1a4f7a; }
+  .av-2 { background: #d9f0e6; color: #1a5c3a; }
+  .av-3 { background: #fdf0d9; color: #7a4a10; }
+  .av-4 { background: #fde8e0; color: #7a2a1a; }
+  .av-5 { background: #ebe8fd; color: #3a2a8a; }
+  .av-6 { background: #fde8f2; color: #7a2050; }
+  .av-7 { background: #e0f0d8; color: #2a5a1a; }
+  .av-8 { background: #efefec; color: #4a4a42; }
+  .player-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .player-meta { font-size: 11px; color: var(--text-soft); margin-top: 1px; }
+  .player-bio { font-size: 11px; color: var(--text-mid); margin-top: 4px; line-height: 1.5; font-style: italic; }
+  .birthday-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--gold-light);
+    color: var(--gold);
+    border: 0.5px solid var(--gold);
+    border-radius: 20px;
+    padding: 1px 7px;
+    margin-left: 5px;
+    vertical-align: middle;
+    font-style: normal;
+  }
+
+  /* BRACKET FLOW */
+  .flow-grid { display: flex; flex-direction: column; gap: 10px; }
+  .flow-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .flow-box {
+    background: white;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .flow-box.gold { background: var(--gold-light); border-color: var(--gold); color: #7a5a10; }
+  .flow-arrow { font-size: 16px; color: var(--text-soft); }
+  .flow-label { font-size: 11px; color: var(--text-soft); }
+
+  /* RULES */
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rule-card {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .rule-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .rule-body { font-size: 11px; color: var(--text-mid); line-height: 1.5; }
+
+  /* STROKES TABLE */
+  .strokes-card {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .strokes-row {
+    display: grid;
+    grid-template-columns: 110px 44px 1fr;
+    gap: 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: start;
+  }
+  .strokes-row:last-child { border-bottom: none; }
+  .strokes-row.header-row {
+    background: var(--green-light);
+  }
+  .sc { padding: 10px 10px; font-size: 11px; }
+  .sc:not(:last-child) { border-right: 0.5px solid var(--border); }
+  .sc-label { font-size: 10px; font-weight: 600; color: var(--green-mid); text-transform: uppercase; letter-spacing: 0.06em; }
+  .sc-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .sc-hcp { font-size: 11px; color: var(--text-soft); margin-top: 1px; }
+  .stroke-count {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 44px;
+  }
+  .stroke-zero { color: var(--text-soft); font-size: 13px; }
+  .hole-chips { display: flex; flex-wrap: wrap; gap: 3px; padding: 8px 10px; align-items: center; }
+  .chip {
+    font-size: 10px;
+    font-weight: 500;
+    background: #ddeef8;
+    color: #1a4f7a;
+    border-radius: 4px;
+    padding: 2px 5px;
+  }
+  .chip-note { font-size: 10px; color: var(--text-soft); font-style: italic; }
+  .chip-double { background: #ebe8fd; color: #3a2a8a; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--green);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.5rem 1.25rem;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .footer strong { color: var(--gold); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="header-bg"></div>
+<div class="header-content">
+  <div class="header-eyebrow">Official Tee Sheet</div>
+  <div class="header-title">The Chazzy Open<span class="year">'26</span></div>
+  <div class="header-sub">Split Rock Golf Course &nbsp;·&nbsp; Bronx, NY</div>
+  <div class="header-details">
+    <span class="header-detail-pill">Saturday, June 13, 2026</span>
+    <span class="header-detail-pill">White Tees &nbsp;·&nbsp; Par 70</span>
+    <span class="header-detail-pill">Start: Hole 10</span>
+  </div>
+</div>
+</div>
+
+
+
+<div class="content">
+
+  <!-- BRACKET -->
+  <div class="section">
+    <div class="section-label">The matchups</div>
+
+    <!-- Match 1 -->
+    <div class="match-block">
+      <div class="match-header">
+        <div class="match-title">Team 1 vs Team 2</div>
+        <div class="match-time">Tee time: 8:27am</div>
+      </div>
+      <div class="match-teams">
+        <div class="team-col">
+          <div class="team-name">Team 1</div>
+          <div class="player-row">
+            <div class="avatar av-2">CW</div>
+            <div>
+              <div class="player-name">Charlie Waters <span class="birthday-tag">birthday boy</span></div>
+              <div class="player-meta">HCP 21 &nbsp;·&nbsp; Bethpage, NY</div>
+              <div class="player-bio">Grew up in the shadow of Bethpage Black and somehow still has a 21 handicap. Has spent more on lessons and gear than a used car. Takes this very, very seriously. The equipment is elite. The scorecard is humbling.</div>
+            </div>
+          </div>
+          <div class="player-row">
+            <div class="avatar av-1">JM</div>
+            <div>
+              <div class="player-name">John Malfetano</div>
+              <div class="player-meta">HCP 11 &nbsp;·&nbsp; Albany, NY</div>
+              <div class="player-bio">Played college golf at Fordham. Doesn't dress like it. Famous for vomiting on the first tee and then striping a drive straight down the middle. The only man whose warmup routine involves a trash can.</div>
+            </div>
+          </div>
+        </div>
+        <div class="vs-col">vs</div>
+        <div class="team-col">
+          <div class="team-name">Team 2</div>
+          <div class="player-row">
+            <div class="avatar av-3">KT</div>
+            <div>
+              <div class="player-name">Keith Taylor</div>
+              <div class="player-meta">HCP 9 &nbsp;·&nbsp; Baldwin, NY</div>
+              <div class="player-bio">The lone country club man, descending from his private fairways to grace the Bronx with his presence. Projected best player in the field. Can he remember what it's like to play a muni without a cart girl?</div>
+            </div>
+          </div>
+          <div class="player-row">
+            <div class="avatar av-4">KJ</div>
+            <div>
+              <div class="player-name">Kyle Jutkiewicz</div>
+              <div class="player-meta">HCP 19 &nbsp;·&nbsp; Stony Brook, NY</div>
+              <div class="player-bio">Hasn't touched his driver in a year after a long, committed relationship with the slice. Rapidly improving — until the back nine, when something in his brain quietly breaks and takes the scorecard with it.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Match 2 -->
+    <div class="match-block">
+      <div class="match-header">
+        <div class="match-title">Team 3 vs Team 4</div>
+        <div class="match-time">Tee time: 8:36am</div>
+      </div>
+      <div class="match-teams">
+        <div class="team-col">
+          <div class="team-name">Team 3</div>
+          <div class="player-row">
+            <div class="avatar av-5">HZ</div>
+            <div>
+              <div class="player-name">Hart Zeitler</div>
+              <div class="player-meta">HCP 21 &nbsp;·&nbsp; Easton, PA</div>
+              <div class="player-bio">Knows he slices it. Swings anyway. Refuses to chip — prefers putting from 40 yards off the green. Inventor of the Pop-D (Pace of Play Drop), a controversial ruling still debated in several states. Watch him in the bushes for when he "finds" his ball.</div>
+            </div>
+          </div>
+          <div class="player-row">
+            <div class="avatar av-6">PB</div>
+            <div>
+              <div class="player-name">Paul Bentley</div>
+              <div class="player-meta">HCP 30 &nbsp;·&nbsp; Perth, Australia</div>
+              <div class="player-bio">Jon Rahm swing. Jon Rahm's grandmother's handicap. Has played more rounds than anyone at his handicap level and still hovers just above 100 like it's a personal forcefield. Today might be the day. Probably not. But maybe.</div>
+            </div>
+          </div>
+        </div>
+        <div class="vs-col">vs</div>
+        <div class="team-col">
+          <div class="team-name">Team 4</div>
+          <div class="player-row">
+            <div class="avatar av-7">DM</div>
+            <div>
+              <div class="player-name">David Malfetano</div>
+              <div class="player-meta">HCP 15 &nbsp;·&nbsp; Albany, NY</div>
+              <div class="player-bio">More handsome and charming than his older brother — the golf game is TBD. The field's biggest wildcard, now paired with Yash. Whether he ever agrees to tee it up with us again may depend entirely on how today goes.</div>
+            </div>
+          </div>
+          <div class="player-row">
+            <div class="avatar av-8">YR</div>
+            <div>
+              <div class="player-name">Yash Rohera</div>
+              <div class="player-meta">HCP 36 &nbsp;·&nbsp; India</div>
+              <div class="player-bio">A handful of rounds of golf under his belt. Always the best dressed man on the course. Has raised millions in venture capital and can work any room — none of which translates to a golf swing. Raw, unbothered, and somehow still optimistic.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRACKET FLOW -->
+  <div class="section">
+    <div class="section-label">How it works</div>
+    <div class="flow-grid">
+      <div class="flow-row">
+        <div class="flow-box">Holes 10–18</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-label">Team 1 vs Team 2 &nbsp;·&nbsp; Team 3 vs Team 4<br>Lowest net score wins each hole. No carryovers.</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-box">Holes 1–9</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-label">Winners face off for the title. Losers battle for 3rd.</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-box gold">Championship</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-label">Tiebreaker: best combined net strokes across holes 1–9.</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-box">First loop tie</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-label">Closest to the pin on hole 16 (par 3 · 170 yds). Marker placed before the round.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOUSE RULES -->
+  <div class="section">
+    <div class="section-label">House rules</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-title">One mulligan</div>
+        <div class="rule-body">One per player, per round. Use it wisely. You know who's burning it on hole 10.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-title">Max score</div>
+        <div class="rule-body">Pick up at double par. You cannot win a hole on a max, even with strokes.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-title">Stroke play</div>
+        <div class="rule-body">Lowest net score wins the hole. Strokes applied by hole handicap order.</div>
+      </div>
+      <div class="rule-card" style="border-color: #9b2c2c; background: #fdf0f0;">
+        <div class="rule-title" style="color: #9b2c2c;">Punctuality</div>
+        <div class="rule-body" style="color: #7a2020;">Late to tee off = 2-stroke penalty + 2 beers. No exceptions. This means you.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STROKE ALLOCATION -->
+  <div class="section">
+    <div class="section-label">Stroke allocation — vs Keith (scratch baseline)</div>
+    <div class="strokes-card">
+
+      <div class="strokes-row header-row">
+        <div class="sc"><span class="sc-label">Player</span></div>
+        <div class="sc" style="text-align:center;"><span class="sc-label">+Strokes</span></div>
+        <div class="sc"><span class="sc-label">Gets a stroke on these holes</span></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">Keith Taylor</div><div class="sc-hcp">HCP 9 · Baseline</div></div>
+        <div class="sc"><div class="stroke-count stroke-zero">—</div></div>
+        <div class="sc"><div class="hole-chips"><span class="chip-note">scratch baseline, no strokes</span></div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">John Malfetano</div><div class="sc-hcp">HCP 11</div></div>
+        <div class="sc"><div class="stroke-count">+2</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip">H7</span><span class="chip">H17</span>
+        </div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">David Malfetano</div><div class="sc-hcp">HCP 15</div></div>
+        <div class="sc"><div class="stroke-count">+6</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span>
+        </div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">Kyle Jutkiewicz</div><div class="sc-hcp">HCP 19</div></div>
+        <div class="sc"><div class="stroke-count">+10</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span>
+        </div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">Charlie Waters</div><div class="sc-hcp">HCP 21</div></div>
+        <div class="sc"><div class="stroke-count">+12</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span><span class="chip">H6</span><span class="chip">H5</span>
+        </div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">Hart Zeitler</div><div class="sc-hcp">HCP 21</div></div>
+        <div class="sc"><div class="stroke-count">+12</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span><span class="chip">H6</span><span class="chip">H5</span>
+        </div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">Paul Bentley</div><div class="sc-hcp">HCP 30</div></div>
+        <div class="sc"><div class="stroke-count">+21</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span><span class="chip">H6</span><span class="chip">H5</span><span class="chip">H14</span><span class="chip">H16</span><span class="chip">H2</span><span class="chip">H12</span><span class="chip">H15</span><span class="chip">H4</span><span class="chip">H7†</span>
+        </div></div>
+      </div>
+
+      <div class="strokes-row">
+        <div class="sc"><div class="sc-name">Yash Rohera</div><div class="sc-hcp">HCP 36</div></div>
+        <div class="sc"><div class="stroke-count">+27</div></div>
+        <div class="sc"><div class="hole-chips">
+          <span class="chip-note">Stroke on every hole, plus a second stroke on the 9 hardest:</span>
+          <span class="chip chip-double">H7×2</span><span class="chip chip-double">H17×2</span><span class="chip chip-double">H8×2</span><span class="chip chip-double">H11×2</span><span class="chip chip-double">H3×2</span><span class="chip chip-double">H18×2</span><span class="chip chip-double">H1×2</span><span class="chip chip-double">H10×2</span><span class="chip chip-double">H9×2</span>
+        </div></div>
+      </div>
+
+    </div>
+    <p style="font-size:11px; color:var(--text-soft); margin-top:10px; line-height:1.6;">
+      Hole HCP order (hardest → easiest): H7(1) · H17(2) · H8(3) · H11(4) · H3(5) · H18(6) · H1(7) · H10(8) · H9(9) · H13(12) · H6(11) · H5(13) · H14(10) · H16(14) · H2(15) · H12(16) · H4(17) · H15(18)
+    </p>
+  </div>
+
+</div>
+
+  <!-- POST ROUND -->
+  <div class="content">
+  <div class="section">
+    <div class="section-label">Post-round celebrations</div>
+    <div class="match-block">
+      <div class="match-header" style="background: var(--gold-light); border-bottom: 0.5px solid rgba(201,168,76,0.3);">
+        <div class="match-title" style="color: #7a5a10;">Other Half Brewing — Williamsburg</div>
+        <div class="match-time" style="color: #7a5a10;">3:00pm</div>
+      </div>
+      <div style="padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 13px; color: var(--text-mid); line-height: 1.6;">
+          Partners, friends, and children all welcome. Come celebrate the Chazzy Open's inaugural champion — or commiserate accordingly.
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-mid);">
+            <span style="font-size: 16px; flex-shrink:0; margin-top:1px;">🍺</span>
+            <span><strong style="color:var(--text);">Losing teams buy beers for the winners.</strong> Settle up like gentlemen.</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--red); background: var(--red-light); border-radius: 8px; padding: 10px;">
+            <span style="font-size: 16px; flex-shrink:0; margin-top:1px;">👕</span>
+            <span><strong>Last place team must walk through Midtown in a Spurs jersey.</strong> No exceptions. Photographic evidence required.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<div class="footer">
+  <strong>The Chazzy Open '26</strong><br>
+  Split Rock Golf Course &nbsp;·&nbsp; June 13, 2026 &nbsp;·&nbsp; Bronx, NY<br>
+  Good luck out there. May the best team win.
+</div>
+
+</body>
+</html>
