@@ -36,7 +36,7 @@
     background: var(--green);
     color: white;
     text-align: center;
-    padding: 2.5rem 1.25rem 2rem;
+    padding: 3rem 1.25rem 2.5rem;
     position: relative;
     overflow: hidden;
   }
@@ -47,6 +47,11 @@
     background-size: cover;
     background-position: center 40%;
     opacity: 0.35;
+  }
+  .header-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(26,61,43,0.5) 0%, rgba(26,61,43,0.2) 100%);
   }
   .header-content {
     position: relative;
@@ -112,7 +117,7 @@
   .alert strong { font-weight: 700; }
 
   /* CONTENT */
-  .content { padding: 0 1.25rem; max-width: 600px; margin: 0 auto; }
+  .content { padding: 0 1.25rem; max-width: 680px; margin: 0 auto; }
 
   /* SECTION */
   .section { padding: 1.75rem 0; border-bottom: 0.5px solid var(--border); }
@@ -275,6 +280,7 @@
     padding: 2px 5px;
   }
   .chip-note { font-size: 10px; color: var(--text-soft); font-style: italic; }
+  .chip-divider { font-size: 11px; color: var(--text-soft); padding: 0 2px; align-self: center; }
   .chip-double { background: #ebe8fd; color: #3a2a8a; }
 
   /* FOOTER */
@@ -293,6 +299,7 @@
 
 <div class="header">
 <div class="header-bg"></div>
+<div class="header-overlay"></div>
 <div class="header-content">
   <div class="header-eyebrow">Official Tee Sheet</div>
   <div class="header-title">The Chazzy Open<span class="year">'26</span></div>
@@ -306,6 +313,210 @@
 </div>
 
 
+
+<!-- COUNTDOWN -->
+<div style="background: var(--green);">
+<div id="countdown-section" style="max-width: 680px; margin: 0 auto; padding: 1.25rem; text-align: center;">
+  <div id="countdown-label" style="font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Tee time in</div>
+  <div id="countdown-blocks" style="display: flex; justify-content: center; gap: 10px;">
+    <div class="cd-block"><div class="cd-num" id="cd-days">--</div><div class="cd-unit">Days</div></div>
+    <div class="cd-block"><div class="cd-num" id="cd-hrs">--</div><div class="cd-unit">Hrs</div></div>
+    <div class="cd-block"><div class="cd-num" id="cd-mins">--</div><div class="cd-unit">Mins</div></div>
+    <div class="cd-block"><div class="cd-num" id="cd-secs">--</div><div class="cd-unit">Secs</div></div>
+  </div>
+  <div id="tee-time-banner" style="display:none; font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 10vw, 56px); color: var(--gold); letter-spacing: 0.06em; line-height: 1.1;">TEE TIME!!!!!</div>
+</div>
+</div>
+
+<!-- WEATHER -->
+<div style="background: var(--green-light); border-bottom: 0.5px solid var(--border);">
+<div id="weather-section" style="max-width: 680px; margin: 0 auto; padding: 1rem 1.25rem;">
+  <div style="font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 10px;">⛳ Course conditions — Split Rock · June 13, 8:27am</div>
+  <div id="weather-loading" style="font-size: 12px; color: var(--text-soft); font-style: italic;">Fetching forecast...</div>
+  <div id="weather-content" style="display:none;">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+      <div id="weather-icon" style="font-size: 32px; line-height: 1;"></div>
+      <div>
+        <div id="weather-temp" style="font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.1;"></div>
+        <div id="weather-feels" style="font-size: 11px; color: var(--text-soft); margin-top: 2px;"></div>
+      </div>
+      <div style="margin-left: auto; text-align: right;">
+        <div id="weather-wind" style="font-size: 12px; color: var(--text-mid); font-weight: 500;"></div>
+        <div id="weather-humidity" style="font-size: 11px; color: var(--text-soft); margin-top: 2px;"></div>
+      </div>
+    </div>
+    <div id="golf-conditions" style="display: flex; flex-direction: column; gap: 6px;"></div>
+  </div>
+  <div id="weather-error" style="display:none;"></div>
+</div>
+</div>
+
+<style>
+  .cd-block {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    min-width: 58px;
+  }
+  .cd-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 7vw, 40px);
+    color: white;
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+  .cd-unit {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 3px;
+  }
+  .golf-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: white;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--text-mid);
+    line-height: 1.5;
+    border: 0.5px solid var(--border);
+  }
+  .golf-tip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .golf-tip strong { color: var(--text); }
+</style>
+
+<script>
+// ── COUNTDOWN ──────────────────────────────────────────
+const TEE_TIME = new Date('2026-06-13T08:27:00-04:00');
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = TEE_TIME - now;
+  if (diff <= 0) {
+    document.getElementById('countdown-blocks').style.display = 'none';
+    document.getElementById('countdown-label').style.display = 'none';
+    document.getElementById('tee-time-banner').style.display = 'block';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hrs  = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+  document.getElementById('cd-hrs').textContent  = String(hrs).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ── WEATHER ────────────────────────────────────────────
+// Split Rock Golf Course, Bronx NY
+const LAT = 40.868, LON = -73.836;
+
+async function fetchWeather() {
+  try {
+    // Fetch hourly forecast for June 13 + June 12 evening (for prior-night rain)
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=temperature_2m,apparent_temperature,precipitation,windspeed_10m,relativehumidity_2m,weathercode&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FNew_York&start_date=2026-06-12&end_date=2026-06-13`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const hours = data.hourly.time;
+    // Find index for June 13 8am
+    const teeIdx = hours.findIndex(t => t === '2026-06-13T08:00');
+    if (teeIdx === -1) throw new Error('No forecast data');
+
+    const temp      = Math.round(data.hourly.temperature_2m[teeIdx]);
+    const feels     = Math.round(data.hourly.apparent_temperature[teeIdx]);
+    const wind      = Math.round(data.hourly.windspeed_10m[teeIdx]);
+    const humidity  = data.hourly.relativehumidity_2m[teeIdx];
+    const code      = data.hourly.weathercode[teeIdx];
+    // Rain evening before: check hours 18-23 on June 12
+    const prevEveningRain = hours.reduce((acc, t, i) => {
+      if (t >= '2026-06-12T18:00' && t <= '2026-06-12T23:00') {
+        return acc + (data.hourly.precipitation[i] || 0);
+      }
+      return acc;
+    }, 0);
+    // Rain during round: check 8am-2pm June 13
+    const roundRain = hours.reduce((acc, t, i) => {
+      if (t >= '2026-06-13T08:00' && t <= '2026-06-13T14:00') {
+        return acc + (data.hourly.precipitation[i] || 0);
+      }
+      return acc;
+    }, 0);
+
+    // Weather icon from WMO code
+    const icon = getWeatherIcon(code);
+
+    document.getElementById('weather-loading').style.display = 'none';
+    document.getElementById('weather-content').style.display = 'block';
+    document.getElementById('weather-icon').textContent = icon;
+    document.getElementById('weather-temp').textContent = `${temp}°F`;
+    document.getElementById('weather-feels').textContent = `Feels like ${feels}°F · ${getConditionText(code)}`;
+    document.getElementById('weather-wind').textContent = `💨 ${wind} mph`;
+    document.getElementById('weather-humidity').textContent = `💧 ${humidity}% humidity`;
+
+    // Golf tips
+    const tips = [];
+    if (prevEveningRain > 1) tips.push({ icon: '🌧️', text: '<strong>Rain last night</strong> — expect soft greens and slower ball roll. Go flag-hunting.' });
+    if (roundRain > 1) tips.push({ icon: '☔', text: '<strong>Rain during the round</strong> — soft fairways, plugged lies possible in rough. Take relief when you can.' });
+    if (wind > 20) tips.push({ icon: '🌬️', text: '<strong>Wind over 20mph</strong> — scoring day is over. Survival mode. Keep it low.' });
+    else if (wind > 10) tips.push({ icon: '💨', text: `<strong>Wind at ${wind}mph</strong> — club up on exposed holes. H6 and H16 will play longer.` });
+    if (temp > 85) tips.push({ icon: '☀️', text: '<strong>Hot and humid</strong> — ball flies a touch further. Stay hydrated, grips will get slick.' });
+    else if (temp < 60) tips.push({ icon: '🥶', text: '<strong>Cold morning</strong> — ball won\'t carry as far, club up across the board.' });
+    if (humidity > 80 && temp <= 85) tips.push({ icon: '🫧', text: '<strong>High humidity</strong> — grips will be slick. Bring a towel.' });
+    if (prevEveningRain < 0.1 && roundRain < 0.1) tips.push({ icon: '⛳', text: '<strong>Dry conditions</strong> — firm and fast greens, ball will run out. Land it short and let it release.' });
+
+    const container = document.getElementById('golf-conditions');
+    if (tips.length === 0) {
+      tips.push({ icon: '✅', text: '<strong>Good scoring conditions</strong> — no major weather concerns. No excuses today.' });
+    }
+    tips.forEach(t => {
+      const div = document.createElement('div');
+      div.className = 'golf-tip';
+      div.innerHTML = `<span class="golf-tip-icon">${t.icon}</span><span>${t.text}</span>`;
+      container.appendChild(div);
+    });
+
+  } catch(e) {
+    document.getElementById('weather-loading').style.display = 'none';
+    document.getElementById('weather-section').closest('div').style.display = 'none';
+  }
+}
+
+function getWeatherIcon(code) {
+  if (code === 0) return '☀️';
+  if (code <= 2) return '⛅';
+  if (code <= 3) return '☁️';
+  if (code <= 49) return '🌫️';
+  if (code <= 59) return '🌦️';
+  if (code <= 69) return '🌧️';
+  if (code <= 79) return '🌨️';
+  if (code <= 82) return '🌧️';
+  if (code <= 99) return '⛈️';
+  return '🌡️';
+}
+
+function getConditionText(code) {
+  if (code === 0) return 'Clear skies';
+  if (code <= 2) return 'Partly cloudy';
+  if (code <= 3) return 'Overcast';
+  if (code <= 49) return 'Foggy';
+  if (code <= 59) return 'Light drizzle';
+  if (code <= 69) return 'Rain';
+  if (code <= 79) return 'Snow';
+  if (code <= 82) return 'Rain showers';
+  if (code <= 99) return 'Thunderstorm';
+  return 'Mixed conditions';
+}
+
+fetchWeather();
+</script>
 
 <div class="content">
 
@@ -375,7 +586,7 @@
             <div class="avatar av-5">HZ</div>
             <div>
               <div class="player-name">Hart Zeitler</div>
-              <div class="player-meta">HCP 21 &nbsp;·&nbsp; Easton, PA</div>
+              <div class="player-meta">HCP 21 &nbsp;·&nbsp; Bethlehem, PA</div>
               <div class="player-bio">Knows he slices it. Swings anyway. Refuses to chip — prefers putting from 40 yards off the green. Inventor of the Pop-D (Pace of Play Drop), a controversial ruling still debated in several states. Watch him in the bushes for when he "finds" his ball.</div>
             </div>
           </div>
@@ -469,8 +680,8 @@
 
       <div class="strokes-row header-row">
         <div class="sc"><span class="sc-label">Player</span></div>
-        <div class="sc" style="text-align:center;"><span class="sc-label">+Strokes</span></div>
-        <div class="sc"><span class="sc-label">Gets a stroke on these holes</span></div>
+        <div class="sc" style="text-align:center;"><span class="sc-label">+</span></div>
+        <div class="sc"><span class="sc-label">Stroke holes — front (10–18) then back (1–9)</span></div>
       </div>
 
       <div class="strokes-row">
@@ -483,7 +694,7 @@
         <div class="sc"><div class="sc-name">John Malfetano</div><div class="sc-hcp">HCP 11</div></div>
         <div class="sc"><div class="stroke-count">+2</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip">H7</span><span class="chip">H17</span>
+          <span class="chip">H17</span><span class="chip-divider">·</span><span class="chip">H7</span>
         </div></div>
       </div>
 
@@ -491,7 +702,7 @@
         <div class="sc"><div class="sc-name">David Malfetano</div><div class="sc-hcp">HCP 15</div></div>
         <div class="sc"><div class="stroke-count">+6</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span>
+          <span class="chip">H11</span><span class="chip">H17</span><span class="chip">H18</span><span class="chip-divider">·</span><span class="chip">H3</span><span class="chip">H7</span><span class="chip">H8</span>
         </div></div>
       </div>
 
@@ -499,7 +710,7 @@
         <div class="sc"><div class="sc-name">Kyle Jutkiewicz</div><div class="sc-hcp">HCP 19</div></div>
         <div class="sc"><div class="stroke-count">+10</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span>
+          <span class="chip">H10</span><span class="chip">H11</span><span class="chip">H13</span><span class="chip">H17</span><span class="chip">H18</span><span class="chip-divider">·</span><span class="chip">H1</span><span class="chip">H3</span><span class="chip">H7</span><span class="chip">H8</span><span class="chip">H9</span>
         </div></div>
       </div>
 
@@ -507,7 +718,7 @@
         <div class="sc"><div class="sc-name">Charlie Waters</div><div class="sc-hcp">HCP 21</div></div>
         <div class="sc"><div class="stroke-count">+12</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span><span class="chip">H6</span><span class="chip">H5</span>
+          <span class="chip">H10</span><span class="chip">H11</span><span class="chip">H13</span><span class="chip">H17</span><span class="chip">H18</span><span class="chip-divider">·</span><span class="chip">H1</span><span class="chip">H3</span><span class="chip">H5</span><span class="chip">H6</span><span class="chip">H7</span><span class="chip">H8</span><span class="chip">H9</span>
         </div></div>
       </div>
 
@@ -515,7 +726,7 @@
         <div class="sc"><div class="sc-name">Hart Zeitler</div><div class="sc-hcp">HCP 21</div></div>
         <div class="sc"><div class="stroke-count">+12</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span><span class="chip">H6</span><span class="chip">H5</span>
+          <span class="chip">H10</span><span class="chip">H11</span><span class="chip">H13</span><span class="chip">H17</span><span class="chip">H18</span><span class="chip-divider">·</span><span class="chip">H1</span><span class="chip">H3</span><span class="chip">H5</span><span class="chip">H6</span><span class="chip">H7</span><span class="chip">H8</span><span class="chip">H9</span>
         </div></div>
       </div>
 
@@ -523,7 +734,7 @@
         <div class="sc"><div class="sc-name">Paul Bentley</div><div class="sc-hcp">HCP 30</div></div>
         <div class="sc"><div class="stroke-count">+21</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip">H7</span><span class="chip">H17</span><span class="chip">H8</span><span class="chip">H11</span><span class="chip">H3</span><span class="chip">H18</span><span class="chip">H1</span><span class="chip">H10</span><span class="chip">H9</span><span class="chip">H13</span><span class="chip">H6</span><span class="chip">H5</span><span class="chip">H14</span><span class="chip">H16</span><span class="chip">H2</span><span class="chip">H12</span><span class="chip">H15</span><span class="chip">H4</span><span class="chip">H7†</span>
+          <span class="chip">H10</span><span class="chip">H11</span><span class="chip">H12</span><span class="chip">H13</span><span class="chip">H14</span><span class="chip">H15</span><span class="chip">H16</span><span class="chip">H17</span><span class="chip">H18</span><span class="chip-divider">·</span><span class="chip">H1</span><span class="chip">H2</span><span class="chip">H3</span><span class="chip">H4</span><span class="chip">H5</span><span class="chip">H6</span><span class="chip">H7</span><span class="chip">H8</span><span class="chip">H9</span><span class="chip">H17†</span>
         </div></div>
       </div>
 
@@ -531,8 +742,8 @@
         <div class="sc"><div class="sc-name">Yash Rohera</div><div class="sc-hcp">HCP 36</div></div>
         <div class="sc"><div class="stroke-count">+27</div></div>
         <div class="sc"><div class="hole-chips">
-          <span class="chip-note">Stroke on every hole, plus a second stroke on the 9 hardest:</span>
-          <span class="chip chip-double">H7×2</span><span class="chip chip-double">H17×2</span><span class="chip chip-double">H8×2</span><span class="chip chip-double">H11×2</span><span class="chip chip-double">H3×2</span><span class="chip chip-double">H18×2</span><span class="chip chip-double">H1×2</span><span class="chip chip-double">H10×2</span><span class="chip chip-double">H9×2</span>
+          <span class="chip-note">Stroke on every hole. Double stroke on 9 hardest:</span>
+          <span class="chip chip-double">H10×2</span><span class="chip chip-double">H11×2</span><span class="chip chip-double">H17×2</span><span class="chip chip-double">H18×2</span><span class="chip-divider">·</span><span class="chip chip-double">H1×2</span><span class="chip chip-double">H3×2</span><span class="chip chip-double">H7×2</span><span class="chip chip-double">H8×2</span><span class="chip chip-double">H9×2</span>
         </div></div>
       </div>
 
@@ -542,10 +753,7 @@
     </p>
   </div>
 
-</div>
-
   <!-- POST ROUND -->
-  <div class="content">
   <div class="section">
     <div class="section-label">Post-round celebrations</div>
     <div class="match-block">
@@ -570,7 +778,8 @@
       </div>
     </div>
   </div>
-  </div>
+
+</div>
 
 <div class="footer">
   <strong>The Chazzy Open '26</strong><br>
